@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Header from "./views/components/main/Header";
+import Sidebar from "./views/components/main/Sidebar";
+import allowPages from "./config/role.config";
+import { Suspense } from "react";
+import Fallback from "./assets/components/Fallback";
 
 function App() {
+  const myUrl = window.location.href;
+  const mainUrl = myUrl.includes("app.dev.farmbook.co") ? "/alifarmapp" : "";
+
+  const role = useSelector((state) => state.user.role);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter basename={mainUrl}>
+      <div>
+      {role === "user" ? <Sidebar /> : null}
+        <div>
+        {role === "user" ? <Header /> : null}
+          <Suspense fallback={<Fallback/>}>
+            
+          <Switch>
+            {allowPages[role].routes.map((page, idx) => {
+              return (
+                <Route
+                exact
+                key={page.path}
+                path={page.path}
+                render={(props) => <page.component {...props} />}
+                />
+                );
+              })}
+            <Redirect to={allowPages[role].redirect} />
+          </Switch>
+              </Suspense >
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
