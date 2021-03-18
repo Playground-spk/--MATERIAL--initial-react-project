@@ -22,7 +22,7 @@ export const storeLoadState = () => {
   
   //access token is token for specify user data in web
  export const storeGetAccessToken = () => {
-    const state = loadState();
+    const state = storeLoadState();
     if (state === undefined) return state;
   
     return state?.user?.token;

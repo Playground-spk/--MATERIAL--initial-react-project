@@ -6,7 +6,6 @@ import Login from "../views/pages/login/Login";
  * @param {Component} component  component that show in this particular path.
  * @param {ENUM Varriable} groupPath specific group that lead on endpoint in prop path use to grouping endpoint that related each other.
  * @param {String} endpoint The string following groupPath in prop path that tell you about and direct to specific page .
- * @param {String} title The string that will show in head of this component page.
  */
 class RouteComponent {
   constructor(component, groupPath, endpoint) {
